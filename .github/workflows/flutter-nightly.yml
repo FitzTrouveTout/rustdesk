@@ -1439,7 +1439,7 @@ jobs:
             flatpak --user remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
             flatpak --user install -y flathub org.freedesktop.Platform/${{ matrix.job.arch }}/21.08
             flatpak --user install -y flathub org.freedesktop.Sdk/${{ matrix.job.arch }}/21.08
-           # package
+            # package
             pushd flatpak
             git clone https://github.com/flathub/shared-modules.git --depth=1
             flatpak-builder --user --force-clean --repo=repo ./build ./rustdesk.json

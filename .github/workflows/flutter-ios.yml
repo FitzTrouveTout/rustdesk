@@ -52,7 +52,7 @@ jobs:
         shell: bash
         run: |
           pushd /opt
-          wget https://github.com/rustdesk/doc.rustdesk.com/releases/download/console/ios_dep.tar.gz
+          curl -o ios_dep.tar.gz https://github.com/rustdesk/doc.rustdesk.com/releases/download/console/ios_dep.tar.gz
           tar xzf ios_dep.tar.gz
       - name: Build rust
         shell: bash

@@ -26,10 +26,10 @@ env:
           run: |
             brew install llvm create-dmg nasm yasm cmake gcc wget ninja
         - name: Install flutter
-        uses: subosito/flutter-action@v2
-        with:
-          channel: "stable"
-          flutter-version: ${{ env.FLUTTER_VERSION }}
+          uses: subosito/flutter-action@v2
+          with:
+            channel: "stable"
+            flutter-version: ${{ env.FLUTTER_VERSION }}
 
         - name: Install Rust toolchain
           uses: actions-rs/toolchain@v1
@@ -38,11 +38,12 @@ env:
             target: ${{ matrix.job.target }}
             override: true
             profile: minimal # minimal component installation (ie, no documentation)
-         - name: Restore from cache and install vcpkg
-            uses: lukka/run-vcpkg@v7
-            with:
-              setupOnly: true
-              vcpkgGitCommitId: ${{ env.VCPKG_COMMIT_ID }}
+
+        - name: Restore from cache and install vcpkg
+          uses: lukka/run-vcpkg@v7
+          with:
+            setupOnly: true
+            vcpkgGitCommitId: ${{ env.VCPKG_COMMIT_ID }}
 
         - uses: Swatinem/rust-cache@v2
           with:

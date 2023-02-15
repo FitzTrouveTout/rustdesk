@@ -1,0 +1,62 @@
+
+name: Flutter iOS Nightly Build
+
+on:
+  workflow_dispatch:
+
+env:
+  LLVM_VERSION: "15.0.6"
+  FLUTTER_VERSION: "3.7.0"
+  TAG_NAME: "nightly"
+  # vcpkg version: 2022.05.10
+  # for multiarch gcc compatibility
+  VCPKG_COMMIT_ID: "14e7bb4ae24616ec54ff6b2f6ef4e8659434ea44"
+  VERSION: "1.2.0"
+  # To make a custom build with your own servers set the below secret values
+  RS_PUB_KEY: '${{ secrets.RS_PUB_KEY }}'
+  RENDEZVOUS_SERVER: '${{ secrets.RENDEZVOUS_SERVER }}'
+  jobs:
+    build-for-ios:
+      name: build rustdesk iOS IPA
+      runs-on: macos-latest
+      steps:
+        - name: Checkout source code
+          uses: actions/checkout@v3
+        - name: Install build runtime
+          run: |
+            brew install llvm create-dmg nasm yasm cmake gcc wget ninja
+        - name: Install flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+
+        - name: Install Rust toolchain
+          uses: actions-rs/toolchain@v1
+          with:
+            toolchain: stable
+            target: ${{ matrix.job.target }}
+            override: true
+            profile: minimal # minimal component installation (ie, no documentation)
+         - name: Restore from cache and install vcpkg
+            uses: lukka/run-vcpkg@v7
+            with:
+              setupOnly: true
+              vcpkgGitCommitId: ${{ env.VCPKG_COMMIT_ID }}
+
+        - uses: Swatinem/rust-cache@v2
+          with:
+            prefix-key: ios
+        - name: Download deps
+          shell: bash
+          run: |
+            pushd /opt
+            wget https://github.com/rustdesk/doc.rustdesk.com/releases/download/console/ios_dep.tar.gz
+            tar xzf ios_dep.tar.gz
+        - name: Build rust
+          shell: bash
+          env:
+            VCPKG_ROOT: /opt/vcpkg
+          run: |
+            ./flutter/ios_x64.sh
+            ./flutter/ios_arm64.sh

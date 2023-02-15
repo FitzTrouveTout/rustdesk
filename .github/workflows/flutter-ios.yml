@@ -24,7 +24,7 @@ jobs:
         uses: actions/checkout@v3
       - name: Install build runtime
         run: |
-          brew install llvm create-dmg nasm yasm cmake gcc wget ninja
+          brew install llvm create-dmg nasm yasm cmake gcc curl ninja
       - name: Install flutter
         uses: subosito/flutter-action@v2
         with:
@@ -52,7 +52,7 @@ jobs:
         shell: bash
         run: |
           pushd /opt
-          curl -o ios_dep.tar.gz https://github.com/rustdesk/doc.rustdesk.com/releases/download/console/ios_dep.tar.gz
+          curl -sSL -o ios_dep.tar.gz https://github.com/rustdesk/doc.rustdesk.com/releases/download/console/ios_dep.tar.gz
           tar xzf ios_dep.tar.gz
       - name: Build rust
         shell: bash

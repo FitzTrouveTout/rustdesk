@@ -931,9 +931,9 @@ jobs:
               use-cross: true,
               extra-build-features: "flatpak",
             }
-          - { arch: armv7, target: arm-unknown-linux-gnueabihf , os: ubuntu-20.04, use-cross: true, extra-build-features: "" }
-          - { arch: armv7, target: arm-unknown-linux-gnueabihf , os: ubuntu-20.04, use-cross: true, extra-build-features: "flatpak" }
-          - { target: arm-unknown-linux-musleabihf, os: ubuntu-20.04, use-cross: true }
+          #- { arch: armv7, target: arm-unknown-linux-gnueabihf , os: ubuntu-20.04, use-cross: true, extra-build-features: "" }
+          #- { arch: armv7, target: arm-unknown-linux-gnueabihf , os: ubuntu-20.04, use-cross: true, extra-build-features: "flatpak" }
+          #- { target: arm-unknown-linux-musleabihf, os: ubuntu-20.04, use-cross: true }
     steps:
       - name: Checkout source code
         uses: actions/checkout@v3
